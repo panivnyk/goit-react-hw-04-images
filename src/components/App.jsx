@@ -8,7 +8,7 @@ import { Loader } from 'components/Loader/Loader.jsx';
 import { Button } from 'components/Button/Button.jsx';
 //5 - import { Modal } from 'components/Modal/Modal.jsx';
 
-import { Container, Notify } from 'services/Common.styled';
+import { Container, Notify } from 'components/App.styled';
 
 export class App extends Component {
   state = {

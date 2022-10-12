@@ -1,5 +1,5 @@
 import { Blocks } from 'react-loader-spinner';
-import { LoaderDiv } from 'services/Common.styled';
+import { LoaderDiv } from 'components/Loader/Loader.styled';
 
 export const Loader = () => {
   return (

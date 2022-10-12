@@ -9,7 +9,7 @@ import {
   SearchFormButton,
   SearchFormButtonLabel,
   SearchFormInput,
-} from 'services/Common.styled';
+} from 'components/Searchbar/Searchbar.styled';
 
 export const Searchbar = ({ onSubmit }) => {
   const handleSubmit = (values, { resetForm }) => {

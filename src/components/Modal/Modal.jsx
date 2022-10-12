@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { Overlay, ModalDiv } from 'services/Common.styled';
+import { Overlay, ModalDiv } from 'components/Modal/Modal.styled';
 
 export const Modal = ({ tags, largeImageURL, backdropClick }) => {
   return (

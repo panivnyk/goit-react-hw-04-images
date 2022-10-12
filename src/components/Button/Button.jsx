@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { ButtonLoadMore } from 'services/Common.styled';
+import { ButtonLoadMore } from 'components/Button/Button.styled';
 
 export const Button = ({ onLoadMore }) => {
   return (

@@ -5,7 +5,7 @@ import { Modal } from 'components/Modal/Modal';
 import {
   ImageGalleryItemLi,
   ImageGalleryItemImage,
-} from 'services/Common.styled';
+} from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
