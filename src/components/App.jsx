@@ -1,75 +1,56 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
 import { fetchImages } from 'services/api.jsx';
 import { Searchbar } from 'components/Searchbar/Searchbar.jsx';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery.jsx';
-// import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
 import { Loader } from 'components/Loader/Loader.jsx';
 import { Button } from 'components/Button/Button.jsx';
-//5 - import { Modal } from 'components/Modal/Modal.jsx';
 
 import { Container, Notify } from 'components/App.styled';
 
-export class App extends Component {
-  state = {
-    query: '',
-    page: 1,
-    images: null,
-    isLoading: false,
-    total: 0,
-  };
+export const App = () => {
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [total, setTotal] = useState(0);
 
-  componentDidUpdate(_, prevState) {
-    const { page, query } = this.state;
-    if (prevState.page !== page || prevState.query !== query) {
-      this.dataImages(query, page);
+  useEffect(() => {
+    async function dataImages() {
+      if (query === '') {
+        return;
+      }
+      setIsLoading(true);
+      const data = await fetchImages(query, page);
+
+      if (page === 1) {
+        setTotal(data.total);
+        setImages([...data.hits]);
+        setIsLoading(false);
+      } else {
+        setImages(images => [...images, ...data.hits]);
+        setIsLoading(false);
+      }
     }
-  }
+    dataImages();
+  }, [query, page]);
 
-  handleInput = e => {
-    this.setState({
-      page: 1,
-      query: e.searchQuery,
-      images: null,
-    });
+  const handleInput = e => {
+    setPage(1);
+    setQuery(e.searchQuery);
+    setImages(null);
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-      isLoading: true,
-    }));
+  const loadMore = () => {
+    setPage(page + 1);
+    setIsLoading(true);
   };
 
-  dataImages = async (query, page) => {
-    this.setState({ isLoading: true });
-    const data = await fetchImages(query, page);
-
-    if (page === 1) {
-      this.setState(() => ({
-        total: data.total,
-        images: [...data.hits],
-        isLoading: false,
-      }));
-    } else {
-      this.setState(state => ({
-        images: [...state.images, ...data.hits],
-        isLoading: false,
-      }));
-    }
-  };
-
-  // onCloseModal = () => {
-  //   this.setState({ isModal: false });
-  // };
-
-  render() {
-    const { images, isLoading, total } = this.state;
-    return (
+  return (
+    <Container>
       <Container>
-        <Searchbar onSubmit={this.handleInput} />
+        <Searchbar onSubmit={handleInput} />
         {isLoading && <Loader>Loading</Loader>}
-        {/* <ImageGallery items={images} /> */}
 
         {images && (
           <>
@@ -79,7 +60,7 @@ export class App extends Component {
 
             {isLoading && <Loader>Loading</Loader>}
             {images.length > 0 && images.length < total && (
-              <Button onLoadMore={this.loadMore} />
+              <Button onLoadMore={loadMore} />
             )}
             {isLoading && <Loader>Loading</Loader>}
 
@@ -89,6 +70,6 @@ export class App extends Component {
           </>
         )}
       </Container>
-    );
-  }
-}
+    </Container>
+  );
+};
